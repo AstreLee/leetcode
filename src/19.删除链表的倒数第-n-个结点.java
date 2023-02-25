@@ -1,3 +1,6 @@
+import java.util.Deque;
+import java.util.LinkedList;
+
 /*
  * @lc app=leetcode.cn id=19 lang=java
  *
@@ -16,55 +19,92 @@
  * }
  */
 class Solution {
+    // // 方法一：统计所有结点的个数然后在遍历删除
+    // public ListNode removeNthFromEnd(ListNode head, int n) {
+    //     // 由于无法知晓待删除的结点是不是首结点，所以我们自己声明一个头结点
+    //     // 然后添加到链表当中去，这样不管是删除首结点还是其它结点操作都是一样的
+    //     ListNode dummy = new ListNode(0, head);
+    //     int length = getLength(head);
+    //     ListNode cur = dummy;
+    //     // 找到待删除结点的前面一个结点
+    //     for (int i = 0; i < length - n; ++i) {
+    //         cur = cur.next;
+    //     }
+    //     // 删除
+    //     cur.next = cur.next.next;
+    //     // 返回首结点
+    //     return dummy.next;
+    // }
+
+    // // 获取链表长度
+    // private int getLength(ListNode head) {
+    //     int count = 0;
+    //     while (head != null) {
+    //         ++count;
+    //         head = head.next;
+    //     }
+    //     return count;
+    // }
+    
+    // 方法二：利用栈的先进后出、后进先出的特性，将所有的节点压栈，然后依次弹出即可
+    // public ListNode removeNthFromEnd(ListNode head, int n) {
+    //     ListNode dummy = new ListNode(1, head);
+    //     Deque<ListNode> stack = new LinkedList<>();
+    //     ListNode cur = dummy;
+    //     while (cur != null) {
+    //         stack.push(cur);
+    //         cur = cur.next;
+    //     }
+    //     for (int i = 0; i < n; ++i) {
+    //         stack.pop();
+    //     }
+    //     // 此时栈顶元素就是待删除结点的前面一个结点
+    //     cur = stack.peek();
+    //     // 删除结点
+    //     cur.next = cur.next.next;
+    //     // 返回首结点
+    //     return dummy.next;
+    // }
+
+    // 方法三：使用前后指针，开头先让前指针移动n步，而后前指针和后指针同时向后移动
+    // 利用两个指针之间的间距一定删除倒数第n个结点
+    // public ListNode removeNthFromEnd(ListNode head, int n) {
+    //     // 为了删除方便同样声明头结点
+    //     ListNode dummy = new ListNode(0, head);
+    //     // 声明前、后指针
+    //     ListNode first = dummy;
+    //     ListNode second = dummy;
+    //     // 让前指针先走n + 1步，这样不是找到待删除的结点，而是找到待删除结点的前一个结点
+    //     for (int i = 0; i <= n; ++i) {
+    //         first = first.next;
+    //     }
+    //     // 前后指针同时移动
+    //     while (first != null) {
+    //         first = first.next;
+    //         second = second.next;
+    //     }
+    //     // 删除结点
+    //     second.next = second.next.next;
+    //     // 返回首结点
+    //     return dummy.next;
+    // }
+
+    // 方法四：利用递归回溯的思想找到倒数第i个结点
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        // --------------------- 分割线 -------------------
-        // 其实这种方法速度还是比较快的，但是还是遍历了两次
-        // 首先得知道链表中有多少个节点
-        // int count = 0;
-        // ListNode pt = head;
-        // while (pt != null) {
-        // ++count;
-        // pt = pt.next;
-        // }
-        // if (count == n) return head.next; 
-        // 这一步很关键，但是实际上可以用添加头节点的方式实现
-        // ListNode pr = head;
-        // pt = head.next;
-        // int i = 1;
-        // while (pt != null && i < count - n) {
-        // pr = pt;
-        // pt = pt.next;
-        // ++i; // while里面一定要记得更新循环变量，别再吃这个亏了呜呜呜
-        // }
-        // if (pt == null) pr.next = null;
-        // else pr.next = pt.next;
-        // return head;
+        ListNode dummy = new ListNode(0, head);
+        remove(dummy, n);
+        return dummy.next;
+    }
 
-        // ------------------ 分割线 -----------------
-        // 实际上还可以一次遍历，好像还是双指针。。。
-        // .next.next....总共n次数下面是否为n
-        // ListNode newHead = new ListNode(-1, head);
-        // ListNode pr = newHead;
-        // ListNode pt = newHead;
-        // int count = n;
-        // while (pt != null) {
-        //     count = n;
-        //     pr = pt;
-        //     while (count > 0) {
-        //         pr = pr.next;
-        //         --count;
-        //     }
-        //     if (pr.next == null) {
-        //         pt.next = pt.next.next;
-        //         break;
-        //     }
-        //     pt = pt.next;
-        // }
-        // return newHead.next;
-        // --------------------------------------
-        // 上面这道题真的是吧头节点给玩透了
-
-        // 实际上这题还可以用栈来求解
+    private int remove(ListNode pt, int n) {
+        if (pt == null) {
+            return 0;
+        }
+        int num = remove(pt.next, n);
+        if (num == n) {
+            pt.next = pt.next.next;
+        }
+        return num + 1;
     }
 }
 // @lc code=end
