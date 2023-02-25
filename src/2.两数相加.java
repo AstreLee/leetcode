@@ -44,28 +44,11 @@ class Solution {
             if (l2 != null)
                 l2 = l2.next;
         }
-        // 注意最后可能还有进位
+        // 注意最后可能还有进位，这一点一定不能忽略了
         if (carry > 0) {
             tail.next = new ListNode(carry, null);
         }
         return head;
-    }
-}
-
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode() {
-    }
-
-    ListNode(int val) {
-        this.val = val;
-    }
-
-    ListNode(int val, ListNode next) {
-        this.val = val;
-        this.next = next;
     }
 }
 // @lc code=end
