@@ -17,11 +17,6 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        // 这道题是原题。。。不如上面的环形链表
-        // 首先处理一下边界情况
-        // 等等，这题好像不能再单独创建一个list3。。。
-        // 相比于单独创建一个list3，这种方法真的是好的不能再好
-        // 真的记住创建头节点的好处哈哈哈哈哈哈
         ListNode head = new ListNode(-1, null);  // 这就是创建头节点的好处
         ListNode tail = head;
         while (list1 != null && list2 != null) {
